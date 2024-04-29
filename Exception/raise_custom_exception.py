@@ -9,4 +9,4 @@ try:
 except UserException as e:
     e.print_expection()
 finally:
-    print("clean up done")0
+    print("clean up done")
