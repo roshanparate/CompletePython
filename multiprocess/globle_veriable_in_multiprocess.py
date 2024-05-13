@@ -1,9 +1,10 @@
 import multiprocessing
 
-def cals_square(numbers, result, v):
+def cals_square(numbers, result, v, q):
     v.value = 5.6;
     for inx, num in enumerate(numbers):
         result[inx] = num*num
+        q.put(num*num)
 
 
 if __name__ == '__main__':
@@ -14,7 +15,10 @@ if __name__ == '__main__':
     # Globle veriable declearation as value
     v = multiprocessing.Value('d', 0.0)
 
-    p1 = multiprocessing.Process(target=cals_square, args=(array, result, v))
+    # Globle veriable declearation as Queue
+    q = multiprocessing.Queue()
+
+    p1 = multiprocessing.Process(target=cals_square, args=(array, result, v, q))
 
     p1.start()
     p1.join()
@@ -22,3 +26,6 @@ if __name__ == '__main__':
     print("done...")
     print(result[:])
     print(v.value)
+
+    while q.empty() is False:
+        print(q.get())
